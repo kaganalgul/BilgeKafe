@@ -38,10 +38,6 @@ namespace BilgeKafe.UI
             this.cboUrun = new System.Windows.Forms.ComboBox();
             this.cboMasaNo = new System.Windows.Forms.ComboBox();
             this.dgvSiparisDetaylari = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnDetayEkle = new System.Windows.Forms.Button();
             this.btnMasaTasi = new System.Windows.Forms.Button();
             this.btnSiparisIptal = new System.Windows.Forms.Button();
@@ -87,7 +83,7 @@ namespace BilgeKafe.UI
             // 
             this.lblMasaNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMasaNo.BackColor = System.Drawing.Color.DarkBlue;
-            this.lblMasaNo.Font = new System.Drawing.Font("Arial", 50F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
+            this.lblMasaNo.Font = new System.Drawing.Font("Arial", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.lblMasaNo.ForeColor = System.Drawing.Color.White;
             this.lblMasaNo.Location = new System.Drawing.Point(564, 58);
             this.lblMasaNo.Name = "lblMasaNo";
@@ -146,45 +142,14 @@ namespace BilgeKafe.UI
             this.dgvSiparisDetaylari.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvSiparisDetaylari.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvSiparisDetaylari.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvSiparisDetaylari.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvSiparisDetaylari.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3,
-            this.Column4});
             this.dgvSiparisDetaylari.Location = new System.Drawing.Point(12, 58);
             this.dgvSiparisDetaylari.Name = "dgvSiparisDetaylari";
             this.dgvSiparisDetaylari.ReadOnly = true;
             this.dgvSiparisDetaylari.Size = new System.Drawing.Size(546, 397);
             this.dgvSiparisDetaylari.TabIndex = 8;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "UrunAd";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Width = 120;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "BirimFiyat";
-            this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
-            this.Column2.Width = 115;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Adet";
-            this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
-            this.Column3.Width = 115;
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "TutarTL";
-            this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
-            this.Column4.Width = 118;
             // 
             // btnDetayEkle
             // 
@@ -195,6 +160,7 @@ namespace BilgeKafe.UI
             this.btnDetayEkle.TabIndex = 9;
             this.btnDetayEkle.Text = "EKLE";
             this.btnDetayEkle.UseVisualStyleBackColor = true;
+            this.btnDetayEkle.Click += new System.EventHandler(this.btnDetayEkle_Click);
             // 
             // btnMasaTasi
             // 
@@ -253,9 +219,19 @@ namespace BilgeKafe.UI
             // 
             this.nudAdet.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.nudAdet.Location = new System.Drawing.Point(195, 25);
+            this.nudAdet.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudAdet.Name = "nudAdet";
             this.nudAdet.Size = new System.Drawing.Size(120, 26);
             this.nudAdet.TabIndex = 14;
+            this.nudAdet.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // SiparisForm
             // 
@@ -303,9 +279,5 @@ namespace BilgeKafe.UI
         private System.Windows.Forms.Button btnOdemeAl;
         private System.Windows.Forms.Button btnAnasayfa;
         private System.Windows.Forms.NumericUpDown nudAdet;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
     }
 }
