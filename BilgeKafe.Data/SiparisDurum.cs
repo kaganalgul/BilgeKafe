@@ -11,6 +11,5 @@ namespace BilgeKafe.Data
             Aktif = 0,
             Odendi = 1,
             Iptal = 2
-        }
-    
+        }    
 }
