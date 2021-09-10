@@ -8,7 +8,7 @@ namespace BilgeKafe.Data
 {
     public class KafeVeri
     {
-        public int MasaAdet { get; set; } = 30;
+        public int MasaAdet { get; set; } = 20;
 
         public List<Urun> Urunler { get; set; } = new List<Urun>();
 
