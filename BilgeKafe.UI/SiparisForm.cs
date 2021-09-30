@@ -23,7 +23,7 @@ namespace BilgeKafe.UI
         {
             this.db = db;
             this.siparis = siparis;
-            blSiparisDetaylar = new BindingList<SiparisDetay>(siparis.SiparisDetaylar);
+            blSiparisDetaylar = new BindingList<SiparisDetay>(siparis.SiparisDetaylar.ToList());
             blSiparisDetaylar.ListChanged += BlSiparisDetaylar_ListChanged;
             InitializeComponent();
             dgvSiparisDetaylari.AutoGenerateColumns = false; // otomatik sütun oluşturmayı kapat
@@ -44,11 +44,11 @@ namespace BilgeKafe.UI
             //    }
             //}
 
-            cboMasaNo.DataSource = Enumerable.Range(1, 20).Where(i => !db.AktifSiparisler.Any(s => s.MasaNo == i)).ToList();
+            cboMasaNo.DataSource = Enumerable.Range(1, 20).Where(i => !db.Siparisler.Any(s => s.MasaNo == i && s.Durum == SiparisDurum.Aktif)).ToList();
         }
 
         private void BlSiparisDetaylar_ListChanged(object sender, ListChangedEventArgs e)
-        {
+        {            
             OdemeTutariniGuncelle();
         }
 
@@ -83,11 +83,15 @@ namespace BilgeKafe.UI
             {
                 UrunAd = urun.UrunAd,
                 BirimFiyat = urun.BirimFiyat,
-                Adet = adet
+                Adet = adet,
+                Urun = urun
             };
+
             blSiparisDetaylar.Add(sd);
-            OdemeTutariniGuncelle();
+            db.SaveChanges();
+            siparis.SiparisDetaylar.Add(sd);
             nudAdet.Value = 1;
+            
         }
 
         private void btnAnasayfa_Click(object sender, EventArgs e)
@@ -104,6 +108,7 @@ namespace BilgeKafe.UI
                 SiparisiKapat(SiparisDurum.Odendi);
             }
         }
+
         private void btnSiparisIptal_Click(object sender, EventArgs e)
         {
             DialogResult dr = MessageBox.Show($"Sipariş iptal edilecektir. Onaylıyor musunuz ?", "İptal Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
@@ -119,8 +124,7 @@ namespace BilgeKafe.UI
             siparis.OdenenTutar = durum == SiparisDurum.Odendi ? siparis.ToplamTutar() : 0;
             siparis.Durum = durum;
             siparis.KapanisZamani = DateTime.Now;
-            db.AktifSiparisler.Remove(siparis);
-            db.GecmisSiparisler.Add(siparis);
+            db.SaveChanges();
             Close();
         }
 
@@ -129,6 +133,7 @@ namespace BilgeKafe.UI
             int eskiMasaNo = siparis.MasaNo;
             int yeniMasaNo = (int)cboMasaNo.SelectedItem;
             siparis.MasaNo = yeniMasaNo;
+            db.SaveChanges();
             MasaNoGuncelle();
             MasaNolariListele();
 
@@ -142,6 +147,13 @@ namespace BilgeKafe.UI
             {
                 MasaTasindi(this, args);
             }
+        }
+
+        private void dgvSiparisDetaylari_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
+        {
+            SiparisDetay sd = (SiparisDetay)dgvSiparisDetaylari.SelectedRows[0].DataBoundItem;
+            db.SiparisDetaylar.Remove(sd);
+            db.SaveChanges();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -14,15 +15,14 @@ namespace BilgeKafe.UI
     public partial class UrunlerForm : Form
     {
         private readonly KafeVeri db;
-        BindingList<Urun> urunler;
+        BindingList<Urun> blUrunler;
         public UrunlerForm(KafeVeri db)
         {
-            this.db = db;
-            urunler = new BindingList<Urun>(db.Urunler);
+            this.db = db;            
+            blUrunler = new BindingList<Urun>(db.Urunler.ToList());
             InitializeComponent();
             dgvUrunler.AutoGenerateColumns = false;
-            dgvUrunler.DataSource = db.Urunler;
-            dgvUrunler.DataSource = urunler;
+            dgvUrunler.DataSource = blUrunler;
         }
 
         private void btnUrunEkle_Click(object sender, EventArgs e)
@@ -36,7 +36,9 @@ namespace BilgeKafe.UI
             }
             if (btnUrunEkle.Text == "EKLE")
             {
-                urunler.Add(new Urun() { UrunAd = ad, BirimFiyat = birimFiyat });
+                Urun urun = new Urun() { UrunAd = ad, BirimFiyat = birimFiyat } ;
+                blUrunler.Add(urun);
+                db.Urunler.Add(urun);
             }
             else
             {
@@ -44,15 +46,25 @@ namespace BilgeKafe.UI
                 Urun urun = (Urun)satir.DataBoundItem;
                 urun.UrunAd = ad;
                 urun.BirimFiyat = birimFiyat;
-                urunler.ResetBindings();
+                blUrunler.ResetBindings();
             }
+            db.SaveChanges();
             FormuResetle();
         }
 
         private void dgvUrunler_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
             DialogResult dr = MessageBox.Show("Seçili ürün silinecektir. Onaylıyor musunuz?", "Silme Onayı", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1);
-            e.Cancel = dr == DialogResult.No;            
+            
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            Urun urun = (Urun)e.Row.DataBoundItem;
+            db.Urunler.Remove(urun);            
+            db.SaveChanges();
         }
 
         private void btnDüzenle_Click(object sender, EventArgs e)
